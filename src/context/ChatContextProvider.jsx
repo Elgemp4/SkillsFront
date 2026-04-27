@@ -6,9 +6,10 @@ const ChatContextProvider = ({children}) => {
 
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [chatId, setChatId] = useState(undefined);
 
     return (
-        <ChatContext value={{chats, messages, setChats, setMessages}}>
+        <ChatContext value={{chats, messages, chatId, setChatId, setChats, setMessages}}>
             {children}
         </ChatContext>
     );
