@@ -43,7 +43,9 @@ const HomeView = () => {
     }, []);
 
     useEffect(() => {
-        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        if(containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
     }, [messages])
 
 
@@ -130,29 +132,36 @@ const HomeView = () => {
                     <h2>Chat n°{index}</h2>
                 </button>)).reverse()}
             </aside>
-            <div ref={containerRef} className="flex flex-col flex-1 gap-4 p-8 h-full overflow-y-auto">
-                {chatId == undefined ?
-                    <div className="flex items-center justify-center">Select a chat on left pane to start chatting !</div> : <>
+            <div className="min-h-0 flex flex-col flex-1 ">
+                {chatId == undefined ? <div className="flex items-center justify-center">Select a chat on left pane to start chatting !</div> : <>
+                    <>
+                    <div ref={containerRef} className="flex flex-col flex-1 gap-4 p-8 h-full overflow-y-auto relative">
 
-                    {messages.map((message) => (
-                        <div key={message.id} className={`border-border border rounded-sm p-4 ${message.role == "user" ? "self-end" : "self-start"}`}>
-                            <h3>{message.role}</h3>
-                            <p dangerouslySetInnerHTML={{__html: message.content.replaceAll("\n", "<br>")}}></p>
-                        </div>
-                    ))}
-                    {isLoading ? <div  className={`border-border border rounded-sm p-4  self-start`}>
-                        <h3>assistant</h3>
-                        <p>Loading{".".repeat(nbDots)}</p>
-                    </div> : <></>}
-                    <form onSubmit={(e) => sendPrompt(e)} className="sticky bottom-0 left-0 right-0 flex gap-16 bg-bg-dark p-8 rounded-lg">
-                        <input disabled={isLoading || currentUser.token === 0} value={prompt} onChange={(e) => setPrompt(e.target.value)} className="disabled:opacity-50 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white" type="text" placeholder="Prompt here .." />
-                        <button disabled={isLoading || currentUser.token === 0} className="button button-primary">📨</button>
-                    </form>
+
+
+                                {messages.map((message) => (
+                                    <div key={message.id} className={`border-border border rounded-sm p-4 ${message.role == "user" ? "self-end" : "self-start"}`}>
+                                        <h3>{message.role}</h3>
+                                        <p dangerouslySetInnerHTML={{__html: message.content.replaceAll("\n", "<br>")}}></p>
+                                    </div>
+                                ))}
+                                {isLoading ? <div  className={`border-border border rounded-sm p-4  self-start`}>
+                                    <h3>assistant</h3>
+                                    <p>Loading{".".repeat(nbDots)}</p>
+                                </div> : <></>}
+
+
+
+                    </div>
+                        <form onSubmit={(e) => sendPrompt(e)} className="flex gap-16 bg-bg-dark p-8 rounded-lg m-8">
+                            <input disabled={isLoading || currentUser.token === 0} value={prompt} onChange={(e) => setPrompt(e.target.value)} className="disabled:opacity-50 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white" type="text" placeholder="Prompt here .." />
+                            <button disabled={isLoading || currentUser.token === 0} className="button button-primary">📨</button>
+                        </form>
+                    </>
+
                 </>}
-
-
-
             </div>
+
         </main>
             <div ref={popoverRef} popover="auto" id="newChat" className="w-screen h-screen bg-transparent backdrop:bg-text-muted backdrop:opacity-45">
                 <div className="flex items-center justify-center h-full">
