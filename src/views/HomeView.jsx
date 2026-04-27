@@ -82,7 +82,16 @@ const HomeView = () => {
         const result = await getApi().put(`/chat/${chatId}`, {
             "content": prompt
         });
+        console.log(result);
         setLoading(false);
+        const token = result.data.token_left;
+        const newUser = {
+            ...currentUser,
+            token: token,
+        }
+        setCurrentUser(newUser);
+        localStorage.setItem("user", JSON.stringify(newUser));
+
         setMessages((curr) => {
             return [...curr, ...[{
                 "role": result.data.response.role,
@@ -110,6 +119,7 @@ const HomeView = () => {
             <h1 className="text-2xl">Skills Chat</h1>
             <div className="flex gap-8 items-center">
                 <p>Connected as <span>{currentUser.firstname + " " + currentUser.lastname}</span></p>
+                <p>{currentUser.token} tokens left</p>
                 <button className="button button-primary" onClick={(e) => {logout(e)}}>Logout</button>
             </div>
         </header>
@@ -135,8 +145,8 @@ const HomeView = () => {
                         <p>Loading{".".repeat(nbDots)}</p>
                     </div> : <></>}
                     <form onSubmit={(e) => sendPrompt(e)} className="sticky bottom-0 left-0 right-0 flex gap-16 bg-bg-dark p-8 rounded-lg">
-                        <input disabled={isLoading} value={prompt} onChange={(e) => setPrompt(e.target.value)} className="disabled:opacity-50 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white" type="text" placeholder="Prompt here .." />
-                        <button className="button button-primary">📨</button>
+                        <input disabled={isLoading || currentUser.token === 0} value={prompt} onChange={(e) => setPrompt(e.target.value)} className="disabled:opacity-50 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white" type="text" placeholder="Prompt here .." />
+                        <button disabled={isLoading || currentUser.token === 0} className="button button-primary">📨</button>
                     </form>
                 </>}
 
@@ -147,8 +157,8 @@ const HomeView = () => {
             <div ref={popoverRef} popover="auto" id="newChat" className="w-screen h-screen bg-transparent backdrop:bg-text-muted backdrop:opacity-45">
                 <div className="flex items-center justify-center h-full">
                     <form onSubmit={(e) => createChat(e)} className="flex-col flex gap-4 bg-bg-dark p-8 rounded-lg">
-                        <textarea disabled={isLoading} value={systemP} onChange={(e) => setSystemP(e.target.value)} className="disabled:opacity-50 h-64 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white" type="text" placeholder="Prompt here .." />
-                        <button popoverTarget="newchat" popoverTargetAction="hide" className="button button-primary">Create new chat</button>
+                        <textarea  value={systemP} onChange={(e) => setSystemP(e.target.value)} className="disabled:opacity-50 h-64 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white" type="text" placeholder="Prompt here .." />
+                        <button  popoverTarget="newchat" popoverTargetAction="hide" className="button button-primary disabled:opacity-50">Create new chat</button>
                     </form>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import {LoginContext} from "../context/LoginContextProvider.jsx";
 import {useNavigate} from "react-router";
 import {getApi} from "../api.js";
+import ChatContextProvider, {ChatContext} from "../context/ChatContextProvider.jsx";
 
 
 const LoginView = () => {
@@ -11,6 +12,7 @@ const LoginView = () => {
     const nav = useNavigate();
 
     const { setCurrentUser, setCurrentToken } = useContext(LoginContext);
+    const { setMessages, setChats, setChatId } = useContext(ChatContext);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -25,6 +27,9 @@ const LoginView = () => {
 
         setCurrentUser(data.user);
         setCurrentToken(data.token);
+        setMessages([]);
+        setChats([]);
+        setChatId(null);
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
 
