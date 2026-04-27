@@ -129,7 +129,7 @@ const HomeView = () => {
             <aside className="flex flex-col bg-bg gap-4 p-4 overflow-y-auto">
                 <button popoverTarget="newChat" popoverTargetAction="toggle"  className="button button-primary">+ New Chat</button>
                 {chats.map((chat, index) => (<button key={chat.id} onClick={(e) => loadChat(e, chat)} className="p-4 cursor-pointer border-border border rounded-md">
-                    <h2>Chat n°{index}</h2>
+                    Chat n°{index}
                 </button>)).reverse()}
             </aside>
             <div className="min-h-0 flex flex-col flex-1 ">
@@ -166,7 +166,7 @@ const HomeView = () => {
             <div ref={popoverRef} popover="auto" id="newChat" className="w-screen h-screen bg-transparent backdrop:bg-text-muted backdrop:opacity-45">
                 <div className="flex items-center justify-center h-full">
                     <form onSubmit={(e) => createChat(e)} className="flex-col flex gap-4 bg-bg-dark p-8 rounded-lg">
-                        <textarea  value={systemP} onChange={(e) => setSystemP(e.target.value)} className="disabled:opacity-50 h-64 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white" type="text" placeholder="Prompt here .." />
+                        <textarea  value={systemP} onChange={(e) => setSystemP(e.target.value)} className="disabled:opacity-50 h-64 border-border border rounded-md h-full px-4 py-2 flex-1 bg-white"  placeholder="Prompt here .." />
                         <button  popoverTarget="newchat" popoverTargetAction="hide" className="button button-primary disabled:opacity-50">Create new chat</button>
                     </form>
                 </div>
