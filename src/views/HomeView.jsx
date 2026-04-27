@@ -128,7 +128,7 @@ const HomeView = () => {
                 <button popoverTarget="newChat" popoverTargetAction="toggle"  className="button button-primary">+ New Chat</button>
                 {chats.map((chat, index) => (<button key={chat.id} onClick={(e) => loadChat(e, chat)} className="p-4 cursor-pointer border-border border rounded-md">
                     <h2>Chat n°{index}</h2>
-                </button>))}
+                </button>)).reverse()}
             </aside>
             <div ref={containerRef} className="flex flex-col flex-1 gap-4 p-8 h-full overflow-y-auto">
                 {chatId == undefined ?
